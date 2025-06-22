@@ -1,5 +1,9 @@
 # Legal Patterns Library
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Open Legal Tools](https://img.shields.io/badge/Open%20Legal%20Tools-Core-purple)](https://github.com/open-legal-tools)
+
 Shared patterns and utilities for legal document processing across the Open Legal Tools ecosystem.
 
 ## Features
@@ -103,11 +107,77 @@ Recognizes these document categories:
 - **Statute**: statutes, acts, codes
 - **Regulation**: regulations, rules, CFR
 
-## Integration
+## Integration with Document Processor
+
+Legal Patterns is the foundational library used by [Document Processor](https://github.com/open-legal-tools/document-processor) and other Open Legal Tools projects.
+
+### Example Integration
+
+```python
+# In document-processor/processor.py
+from legal_patterns import (
+    extract_document_type,
+    extract_party_names,
+    clean_legal_text,
+    LegalPatterns
+)
+
+class DocumentProcessor:
+    def __init__(self):
+        self.patterns = LegalPatterns()
+    
+    def process_legal_document(self, text):
+        # Clean OCR errors
+        cleaned_text = clean_legal_text(text)
+        
+        # Identify document type
+        doc_type = extract_document_type(cleaned_text)
+        
+        # Extract structure
+        paragraphs = self.patterns.PARAGRAPH_NUMBER.findall(cleaned_text)
+        sections = self.patterns.SECTION_NUMBER.findall(cleaned_text)
+        
+        # Extract parties if case document
+        if doc_type in ['opinion', 'order', 'brief']:
+            plaintiff, defendant = extract_party_names(cleaned_text)
+        
+        return {
+            'type': doc_type,
+            'text': cleaned_text,
+            'structure': {
+                'paragraphs': paragraphs,
+                'sections': sections
+            },
+            'parties': {
+                'plaintiff': plaintiff,
+                'defendant': defendant
+            }
+        }
+```
+
+### Using with Core Citation Tools
+
+```python
+from legal_patterns import LegalPatterns
+from core_citation_tools import CitationExtractor
+
+# Combine pattern detection with citation extraction
+patterns = LegalPatterns()
+extractor = CitationExtractor()
+
+# Find footnotes that might contain citations
+footnotes = patterns.FOOTNOTE_TEXT.findall(document_text)
+for footnote in footnotes:
+    citations = extractor.extract(footnote)
+    # Process citations...
+```
+
+## Related Projects
 
 This library is designed to work seamlessly with:
-- `legal-citation-tools`: For citation extraction
-- `legal-document-processor`: For document parsing
+- [**Document Processor**](https://github.com/open-legal-tools/document-processor): Advanced OCR and document parsing
+- [**Core Citation Tools**](https://github.com/open-legal-tools/core-citation-tools): Citation extraction and validation
+- [**CourtListener API**](https://github.com/open-legal-tools/courtlistener-api): Legal research integration
 - All other Open Legal Tools projects
 
 ## Contributing

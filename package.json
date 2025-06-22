@@ -1,0 +1,46 @@
+{
+  "name": "@open-legal-tools/legal-patterns",
+  "version": "1.0.0",
+  "description": "Shared patterns and utilities for legal document processing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-legal-tools/legal-patterns.git"
+  },
+  "keywords": [
+    "legal",
+    "patterns",
+    "document-processing",
+    "citations",
+    "ocr",
+    "legal-tech"
+  ],
+  "author": "Open Legal Tools",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/open-legal-tools/legal-patterns/issues"
+  },
+  "homepage": "https://github.com/open-legal-tools/legal-patterns#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}
